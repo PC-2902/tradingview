@@ -1,0 +1,117 @@
+// original ema trend meter
+//@version=5 
+indicator("EMA Trend Meter")
+import TradingView/ta/7
+
+len1 = input(13, 'Length EMA1')
+len2 = input(21, 'Length EMA1')
+len3 = input(55, 'Length EMA1')
+K_   = input(3, 'Smooth K')
+D_   = input(3, 'Smooth D')
+L1   = input(14, 'RSI Length')
+L2   = input(14, 'STO Length') 
+
+EMA0 = ta.ema(close, 1)
+EMA1 = ta.ema(close, len1)
+EMA2 = ta.ema(close, len2)
+EMA3 = ta.ema(close, len3)
+
+[a, b] =ta.stochRsi(L1, L2, K_, D_, close)
+
+Bull1 = EMA1 < EMA0
+Bull2 = EMA2 < EMA0
+Bull3 = EMA3 < EMA0
+
+plot(20, 'EMA1', color = Bull1 ? #00ff00: #ff0000, linewidth= 4, style= plot.style_circles)
+plot(10, 'EMA2', color = Bull2 ? #00ff00: #ff0000, linewidth= 4, style= plot.style_circles)
+plot(0 , 'EMA3', color = Bull3 ? #00ff00: #ff0000, linewidth= 4, style= plot.style_circles)
+
+
+///     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//@version=5
+indicator("PC2902 All in One", overlay=false)
+
+// Define the lengths of the SMAs
+smaLength1 = 50
+smaLength2 = 100
+
+// Calculate the SMAs
+sma50 = ta.sma(close, smaLength1)
+sma100 = ta.sma(close, smaLength2)
+
+// Get the previous bar's close value and SMA values
+prevClose = close[1]
+prevSMA50 = sma50[1]
+prevSMA100 = sma100[1]
+
+// Determine the colors based on the previous bar's close relative to the SMAs
+sma50Color = prevClose >= prevSMA50 ? #00ff00 : #ff0000
+sma100Color = prevClose >= prevSMA100 ?#00ff00 : #ff0000
+
+// Plot the horizontal lines using the previous SMA values and determined colors
+plot(prevSMA50, color=sma50Color, linewidth=2, title="50-SMA")
+plot(prevSMA100, color=sma100Color, linewidth=2, title="100-SMA")
+
+// EMA and Stochastic RSI settings
+len1 = input(7, 'Length EMA1')
+len2 = input(14, 'Length EMA2')
+len3 = input(21, 'Length EMA3')
+K_   = input(3, 'Smooth K')
+D_   = input(3, 'Smooth D')
+L1   = input(14, 'RSI Length')
+L2   = input(14, 'STO Length')
+
+// Calculate the EMAs
+EMA0 = ta.ema(close, 1)
+EMA1 = ta.ema(close, len1)
+EMA2 = ta.ema(close, len2)
+EMA3 = ta.ema(close, len3)
+
+// Calculate the Stochastic RSI
+rsi = ta.rsi(close, L1)
+stochK = ta.sma(ta.stoch(rsi, rsi, rsi, L2), K_)
+stochD = ta.sma(stochK, D_)
+
+Bull1 = EMA1 < EMA0
+Bull2 = EMA2 < EMA0
+Bull3 = EMA3 < EMA0
+
+Bear1 = EMA1 > EMA0
+Bear2 = EMA2 > EMA0
+Bear3 = EMA3 > EMA0
+
+bullish = Bull1 and Bull2 and Bull3
+bearish = Bear1 and Bear2 and Bear3
+
+// Define variables to keep track of the previous state
+var bool prevBullish = na
+var bool prevBearish = na
+
+// Determine if there is a trend change
+trendChangeBullish = not na(prevBullish) and not prevBullish and bullish
+trendChangeBearish = not na(prevBearish) and not prevBearish and bearish
+trendChange = trendChangeBullish or trendChangeBearish
+
+// Update the previous state variables
+prevBullish := bullish
+prevBearish := bearish
+
+// Determine the color for the shape
+var color shapeColor = na
+shapeColor := trendChangeBullish ? #00ff00 : trendChangeBearish ? #ff0000 : #000000
+
+// Plot the shape only when the trend changes, with the appropriate color
+plotshape(trendChange, style=shape.triangleup, location=location.top, color=shapeColor, size=size.small)
+
+///     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
