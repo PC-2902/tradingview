@@ -1,6 +1,6 @@
 # url   : https://core.telegram.org/bots/api
-# id    : 5626388450
-# token : 6769710324:AAEzopLaKNaWvxQ31Uk5UtAQG4f4v4ImfhI
+# id    : ID
+# token : Token
 # Steps : botfather > /start /mybots
 
 """
@@ -14,7 +14,6 @@ import MT5
 class TeleMain:
     def __init__(self):
         self.tr = tradingview.tradingview_main()
-        token = "6769710324:AAEzopLaKNaWvxQ31Uk5UtAQG4f4v4ImfhI"
         self.bot = telebot.TeleBot(token)
         self.mt = MT5.mt5()
         self.start_uscap()
@@ -52,32 +51,31 @@ import schedule
 class TeleMain:
     def __init__(self):
         self.tr = tradingview.tradingview_main()
-        token = "6769710324:AAEzopLaKNaWvxQ31Uk5UtAQG4f4v4ImfhI"
         self.bot = telebot.TeleBot(token)
         self.mt = MT5.mt5()
         self.running = False
 
     def run_us(self):
         print(time.ctime(time.time()),"\nBot has started")
-        self.bot.send_message(5626388450,"\nBot has started")
+        self.bot.send_message(<User-id>,"\nBot has started")
         
         us = self.tr.run_uscap()
 
         for i in us:
             if i != "avoid":
                 print(i)
-                self.bot.send_message(5626388450,us)
+                self.bot.send_message(<User-id>,us)
             
     def run_ind(self):
         print(time.ctime(time.time()),"\nBot has started")
-        self.bot.send_message(5626388450,"\nBot has started")
+        self.bot.send_message(<User-id>,"\nBot has started")
         
         us = self.tr.run_indcap()
 
         for i in us:
             if i != "avoid":
                 print(i)            
-                self.bot.send_message(5626388450,us)
+                self.bot.send_message(<User-id>,us)
 
     def bot_polling(self):
         while self.running:
@@ -121,11 +119,11 @@ def schedule_bot_ind():
 #schedule_bot_ind()
 
 
-telebot.TeleBot("6769710324:AAEzopLaKNaWvxQ31Uk5UtAQG4f4v4ImfhI").send_message(5626388450,"Script has started")
+telebot.TeleBot("Token").send_message(<User-id>,"Script has started")
 print(time.ctime(time.time()))
 
 def schedule_ind():
-    for hour in range(9, 17):  # from 9:00 to 15:00
+    for hour in range(9, 17):  # from 9:00 to 16:00
         schedule.every().monday.at(f"{hour:02d}:18").do(schedule_bot_ind)
         schedule.every().tuesday.at(f"{hour:02d}:18").do(schedule_bot_ind)
         schedule.every().wednesday.at(f"{hour:02d}:18").do(schedule_bot_ind)
