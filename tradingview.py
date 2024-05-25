@@ -27,8 +27,8 @@ class tradingview_main():
     
     def loadcookie(self):
         self.driver.get("https://www.tradingview.com/accounts/signin/")
-        user_name = "valoranthomeacc1@gmail.com"
-        psw_name  = "AltF4Bro!!!" 
+        user_name = "User-Nama"
+        psw_name  = "Password" 
 
         self.driver.find_element(By.XPATH,"//span[@class='ellipsis-container-bYDQcOkp'][normalize-space()='Email']").click()
         self.driver.find_element(By.XPATH,"//input[@id='id_username']").send_keys(user_name)
